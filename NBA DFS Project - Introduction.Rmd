@@ -1,0 +1,51 @@
+---
+title: "NBA DFS Project"
+author: "Jeff Shandling"
+date: "3/23/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction
+
+Daily Fantasy Sports or DFS, was born out of The Unlawful Internet Gambling Enforcement Act (UIGEA) of 2006. The bill crippled the online poker industry but contained explicit language that legalized daily fantasy sports. DFS can best be described as the following:
+
+Daily fantasy sports (DFS) are a subset of fantasy sport games. As with traditional fantasy sports games, players compete against others by building a team of professional athletes from a particular league or competition while remaining under a salary cap, and earn points based on the actual statistical performance of the players in real-world competitions. -wikipedia
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("janitor")
+library(janitor)
+```
+
+```{r}
+dfs <- read_csv("~/Desktop/NBA_DFS_Master.csv") %>% 
+  clean_names() z
+```
+
+
+```{r}
+dfs
+```
+
+```{r}
+dfs_master <- dfs %>% 
+  select(-gid, -g_time_et, -game_id, -start, -ddp, -yhp) %>% 
+  select(-(yh_sal:vmi))
+```
+
+```{r}
+dfs_master %>% 
+  mutate(minutes = round(minutes, digits = 0)) %>% 
+  arrange(date, last)
+```
+```{r}
+
+ 
+```
+
