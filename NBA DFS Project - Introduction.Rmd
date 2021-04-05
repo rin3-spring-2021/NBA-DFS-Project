@@ -25,7 +25,7 @@ library(janitor)
 
 ```{r}
 dfs <- read_csv("~/Desktop/NBA_DFS_Master.csv") %>% 
-  clean_names() z
+  clean_names() 
 ```
 
 
@@ -42,7 +42,7 @@ dfs_master <- dfs %>%
 ```{r}
 dfs_master %>% 
   mutate(minutes = round(minutes, digits = 0)) %>% 
-  arrange(date, last)
+  arrange(date, last )
 ```
 ```{r}
 
