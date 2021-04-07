@@ -21,6 +21,7 @@ install.packages("tidyverse")
 library(tidyverse)
 install.packages("janitor")
 library(janitor)
+library(skimr)
 ```
 
 ```{r}
@@ -30,8 +31,9 @@ dfs <- read_csv("~/Desktop/NBA_DFS_Master.csv") %>%
 
 
 ```{r}
-dfs
+skim(dfs)
 ```
+
 
 ```{r}
 dfs_master <- dfs %>% 
@@ -40,12 +42,43 @@ dfs_master <- dfs %>%
 ```
 
 ```{r}
-dfs_master %>% 
-  mutate(minutes = round(minutes, digits = 0)) %>% 
-  arrange(date, last )
+dfs_master
+
+  
+
 ```
 ```{r}
+dfs_master %>% 
+  
+```
 
- 
+
+
+```{r}
+dfs_master %>% 
+  filter(first_last == "James Harden" | first_last == "LeBron James" | first_last == "Stephen Curry" | first_last == "Giannis Antetokounmpo") %>% 
+  drop_na() %>% 
+  group_by(first_last) %>% 
+  summarize(mean_dkp = mean(dkp))
+  
+```
+```{r}
+mean_superstar_dkp <- dfs_master %>% 
+    filter(first_last == "James Harden" | first_last == "LeBron James" | first_last == "Stephen Curry" | first_last == "Giannis Antetokounmpo") %>% 
+  drop_na() %>% 
+  group_by(first_last) %>% 
+  summarize(mean_dkp = mean(dkp))
+```
+
+```{r}
+mean_superstar_dkp
+```
+
+```{r}
+ggplot(data = mean_superstar_dkp,
+       mapping = aes(x = first_last,
+                     y = mean_dkp)) +
+  geom_bar(stat = "identity")
+         
 ```
 
