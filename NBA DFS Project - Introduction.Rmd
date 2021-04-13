@@ -17,11 +17,15 @@ Daily Fantasy Sports or DFS, was born out of The Unlawful Internet Gambling Enfo
 Daily fantasy sports (DFS) are a subset of fantasy sport games. As with traditional fantasy sports games, players compete against others by building a team of professional athletes from a particular league or competition while remaining under a salary cap, and earn points based on the actual statistical performance of the players in real-world competitions. -wikipedia
 
 ```{r}
-install.packages("tidyverse")
+
 library(tidyverse)
 install.packages("janitor")
 library(janitor)
 library(skimr)
+```
+
+
+```{r}
 ```
 
 ```{r}
@@ -48,7 +52,7 @@ dfs_master
 
 ```
 ```{r}
-dfs_master %>% 
+dfs_master
   
 ```
 
@@ -79,6 +83,71 @@ ggplot(data = mean_superstar_dkp,
        mapping = aes(x = first_last,
                      y = mean_dkp)) +
   geom_bar(stat = "identity")
-         
 ```
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+dfs_master_zero <- dfs_master[apply(dfs_master, 1, function(row) all(row !=0 )), ] %>% 
+  drop_na()
+  
+dfs_master_zero
+
+```
+
+```{r}
+median_dkp <- dfs_master %>% 
+  filter(minutes >= 0) %>% 
+  group_by(dk_sal) %>%
+  mutate(dk_sal = dk_sal/1000) %>% 
+  summarize(median_dkp = median(dkp)) %>%
+  mutate(median_dkp = round(median_dkp, digits = 1)) %>% 
+  arrange(desc(median_dkp))
+```
+
+```{r}
+install.packages("ggthemes")
+library(ggthemes)
+```
+
+```{r}
+ggplot(data = median_dkp,
+       mapping = aes(x = dk_sal,
+                     y = median_dkp,
+                     fill = median_dkp)) +
+  
+  geom_col() +
+
+  
+  scale_fill_continuous(type = "viridis") +
+  
+  scale_y_continuous(limits = c(0, 70),
+                     breaks = seq(from = 0, to = 70, by = 5))  +
+  
+  scale_x_continuous(limits = c(3, 12),
+                     breaks = seq(from = 3, to = 12, by = 1)) +
+  
+  labs(title = "Median DraftKings Points Per Salary",
+       x = "Player Salary",
+       y = "Median Points",
+       fill = "Median Points") +
+  
+  theme_gdocs()
+  
+
+
+  
+
+  
+  
+```
+```{r}
+
+```
+
+
+
+
 
