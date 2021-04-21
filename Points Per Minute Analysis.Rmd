@@ -1,0 +1,71 @@
+---
+title: "Points Per Minute Data"
+author: "Jeff Shandling"
+date: "4/21/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(ggthemes)
+```
+
+
+
+```{r}
+dfs_raw <- read_csv("~/Desktop/NBA DFS Project/Raw Data/NBA_DFS_Master.csv") %>% 
+  clean_names()
+```
+```{r}
+dfs_filtered <- dfs_raw %>% 
+  select(first_last, date, minutes, dkp, dk_sal) %>% 
+  drop_na() %>% 
+  filter(minutes > 0) %>%
+  mutate(dk_sal = dk_sal/1000) %>% 
+  group_by(first_last) %>% 
+  summarize(total_dkp = sum(dkp),
+            total_mins = sum(minutes),
+            total_sal = sum(dk_sal)) %>% 
+  mutate(points_per_min = total_dkp/total_mins) %>% 
+  mutate(points_per_min = round(points_per_min, digits = 2)) %>% 
+  mutate(points_per_sal = total_dkp/total_sal) %>% 
+  mutate(points_per_sal = round(points_per_sal, digits = 1)) %>% 
+  filter(total_mins >= 400) 
+
+ggplot(data = dfs_filtered, 
+       mapping = aes(x = total_sal,
+                     y = points_per_min,
+                     color = points_per_min)) +
+  geom_col() +
+  
+
+  
+  scale_y_continuous(limits = c(0, 2),
+                     breaks = seq(from = 0, to = 2, by = .1))  +
+  
+  scale_x_continuous(limits = c(50, 450),
+                     breaks = seq(from = 50, to = 450, by = 50)) +
+  
+  labs(title = "Draftkings Points Per Salary",
+       x = "Player Total Salary",
+       y = "Points Per Minute",
+       color = "Points Per Minute") +
+  
+  theme_gdocs()
+```
+```{r}
+dfs_filtered %>% 
+  mutate(points_per_min_greater_1 = points_per_min >= 1) %>% 
+  count(points_per_min_greater_1) %>% 
+  mutate(pct_points_per_min_greater_1 = n/sum(n)) %>% 
+  mutate(pct_points_per_min_greater_1 = round(pct_points_per_min_greater_1, digits = 2))
+```
+
