@@ -6,6 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+chooseCRANmirror(graphics=FALSE, ind=1)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -17,16 +18,12 @@ Daily Fantasy Sports or DFS, was born out of The Unlawful Internet Gambling Enfo
 Daily fantasy sports (DFS) are a subset of fantasy sport games. As with traditional fantasy sports games, players compete against others by building a team of professional athletes from a particular league or competition while remaining under a salary cap, and earn points based on the actual statistical performance of the players in real-world competitions. -wikipedia
 
 ```{r}
-
 library(tidyverse)
 install.packages("janitor")
 library(janitor)
 library(skimr)
 ```
 
-
-```{r}
-```
 
 ```{r}
 dfs <- read_csv("~/Desktop/NBA_DFS_Master.csv") %>% 
@@ -89,13 +86,6 @@ ggplot(data = mean_superstar_dkp,
 library(dplyr)
 ```
 
-```{r}
-dfs_master_zero <- dfs_master[apply(dfs_master, 1, function(row) all(row !=0 )), ] %>% 
-  drop_na()
-  
-dfs_master_zero
-
-```
 
 ```{r}
 median_dkp <- dfs_master %>% 
@@ -143,9 +133,7 @@ ggplot(data = median_dkp,
   
   
 ```
-```{r}
 
-```
 
 
 

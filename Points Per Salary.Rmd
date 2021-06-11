@@ -1,0 +1,45 @@
+---
+title: "Points Per Salary"
+author: "Jeff Shandling"
+date: "4/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(ggplot2)
+```
+
+```{r}
+pps <- read_csv("~/Desktop/NBA DFS Project/Data/NBA_DFS_Master.csv") %>% 
+  clean_names()
+```
+
+```{r}
+pps
+```
+```{r}
+pps1 <- pps%>% 
+  select(-gid, -g_time_et, -game_id, -start, -ddp, -yhp) %>% 
+  select(-(yh_sal:vmi))
+  
+```
+
+```{r}
+pps1 %>% 
+  filter(minutes > 0) %>% 
+  mutate(minutes = round(minutes, digits = 0)) %>% 
+  group_by(dk_sal) %>%
+  mutate(dk_sal = dk_sal/1000) %>%  
+  drop_na() %>% 
+  
+  
+  
+
+```
+

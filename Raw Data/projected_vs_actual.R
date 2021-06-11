@@ -33,7 +33,8 @@ proj_vs_act1 <- proj_vs_act %>%
   count(pct_pos) %>% 
   mutate(percent_fire = n / sum(n)) %>% 
   filter(pct_pos == "fire") %>% 
-  mutate(percent_fire = round(percent_fire, digits = 2))
+  mutate(percent_fire = round(percent_fire, digits = 2)) %>% 
+  arrange(desc(percent_fire))
 
 ggplot(data = proj_vs_act1, 
        mapping = aes(x = salary,
@@ -42,8 +43,6 @@ ggplot(data = proj_vs_act1,
   geom_col() +
   
   coord_flip() + 
-  
-  
   
   scale_y_continuous(limits = c(0, .5),
                      breaks = seq(from = 0, to = .5, by = .05))  +
